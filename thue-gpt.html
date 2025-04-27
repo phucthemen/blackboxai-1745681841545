@@ -93,8 +93,8 @@
                 <div class="flex items-center space-x-4 mb-4">
                     <img src="./chuyen-khoan.jpg" class="items-center pricing-card rounded-xl p-6 space-y-4" style="width:320px; height:auto">
                 </div><div class="flex items-center space-x-4 mb-4">
-                    <input type="text" placeholder="Nhập mã thuê từ SMS..." class="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-purple-500">
-                    <a href="https://soladium-chatbot.vercel.app/" target="_blank" class="button bg-purple-600 px-6 py-2 rounded-lg font-semibold hover:bg-purple-700 transition">
+                    <input id="input-token" type="text" placeholder="Nhập mã thuê từ SMS..." class="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-purple-500">
+                    <a id="confirm-btn" href="https://soladium-chatbot.vercel.app/" target="_blank" class="button bg-purple-600 px-6 py-2 rounded-lg font-semibold hover:bg-purple-700 transition">
                         Xác nhận
                     </a>
                     
@@ -233,6 +233,58 @@
             </div>
         </section>
     </main>
+    <script>
+        document.getElementById('confirm-btn').addEventListener('click', async function(event) {
+            event.preventDefault(); // Ngăn click bay thẳng link
+            
+            const inputToken = document.getElementById('input-token').value.trim().toUpperCase();
+            if (!inputToken) {
+                alert('Vui lòng nhập mã thuê!');
+                return;
+            }
+            
+            const sheetId = '1sDf2yiRMj875KW77f5MWclE-E1sJjRjhphoqom1pXQ0';
+            const apiKey = 'AIzaSyC__-7KQwjJFOuEJLisqTJ15bUTqVaN4bs';
+            const sheetName = 'TokenSheet';
+            
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                const rows = data.values;
+                
+                // Tìm dòng nào trùng Token
+                const header = rows[0];
+                const tokenIndex = header.indexOf('maToken'); // Cột 'Mã Token'
+                const packageIndex = header.indexOf('goiThue'); // Cột 'Gói thuê'
+                
+                const matchedRow = rows.find((row, index) => {
+                    if (index === 0) return false; // Bỏ dòng tiêu đề
+                    return row[tokenIndex]?.toUpperCase() === inputToken;
+                });
+                
+                if (matchedRow) {
+                    const packageName = matchedRow[packageIndex];
+                    let expireDays = 30; // Default 1 tháng
+                    
+                    if (packageName.includes('6 Tháng')) expireDays = 180;
+                    if (packageName.includes('12 Tháng')) expireDays = 365;
+        
+                    // Chuyển hướng kèm token
+                    const redirectUrl = `https://soladium-chatbot.vercel.app/?TOKEN=${inputToken}`;
+                    window.location.href = redirectUrl;
+                } else {
+                    alert('Mã thuê không hợp lệ!');
+                }
+            } catch (error) {
+                console.error('Error fetching token list:', error);
+                alert('Lỗi kết nối, vui lòng thử lại sau!');
+            }
+        });
+        </script>
+
 
     <!-- Footer -->
     <footer class="bg-[#1a1a2e] mt-20 py-12 px-6">
