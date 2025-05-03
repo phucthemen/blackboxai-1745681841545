@@ -16,13 +16,28 @@
   <div id="results"></div>
 
   <script>
-    const sheetId = 'SHEET_ID_CUA_ANH';
-    const apiKey = 'OPENAI_API_KEY';
-    const sheetRange = 'Sheet1!A2:D';
+    const sheetId = '1JKZO3SRy-q9MVioIK0Z0ZOp0bpzCIVOz';
+    const openAiApiKey = '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';
+    const sheetApiKey = 'AIzaSyCquGSEjp0CiyTTa6LGYRf8852dst2YPiw';
+    // TODO: Replace 'Sheet1' with the actual sheet name from your Google Sheet
+    const sheetName = 'BDS'; // Example: 'Sheet1' or 'Sheet1!A1:D100'
 
     async function fetchSheetData() {
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetRange}?key=${apiKey}`;
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${sheetApiKey}`;
       const res = await fetch(url);
+      if (!res.ok) {
+        let errorData;
+        try {
+          errorData = await res.json();
+        } catch (e) {
+          errorData = { error: 'Unable to parse error response' };
+        }
+        console.error('Google Sheets API error:', errorData);
+        // Display error message in the UI
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = `<p style="color:red;">Google Sheets API error: ${JSON.stringify(errorData)}</p>`;
+        return [];
+      }
       const data = await res.json();
       return data.values || [];
     }
@@ -32,7 +47,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`
+          Authorization: `Bearer ${openAiApiKey}`
         },
         body: JSON.stringify({
           model: "gpt-3.5-turbo",
@@ -40,18 +55,30 @@
           temperature: 0.7
         })
       });
+      if (!res.ok) {
+        let errorData;
+        try {
+          errorData = await res.json();
+        } catch (e) {
+          errorData = { error: 'Unable to parse error response' };
+        }
+        console.error('OpenAI API error:', errorData);
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = `<p style="color:red;">OpenAI API error: ${JSON.stringify(errorData)}</p>`;
+        return '';
+      }
       const json = await res.json();
       return json.choices[0].message.content;
     }
 
     function formatPrompt(row) {
-      const [ma, cauHinh, gia, chatLuong] = row;
+      const [ma, gioithieu, gia, tinhtrang] = row;
       return `Viết bài quảng cáo để bán bất động sản sau:
-Mã hàng: ${ma}
-Cấu hình: ${cauHinh}
-Giá: ${gia}
-Chất lượng: ${chatLuong}
-Bài viết cần phù hợp để đăng lên Facebook, không vi phạm chính sách.`;
+        Mã hàng: ${ma}
+        Cấu hình: ${gioithieu}
+        Giá: ${gia}
+        Chất lượng: ${tinhtrang}
+        Bài viết cần phù hợp để đăng lên Facebook, không vi phạm chính sách.`;
     }
 
     async function fetchAndGenerate() {
