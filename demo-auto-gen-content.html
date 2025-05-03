@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gen Content BĐS</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    button { margin: 10px 0; padding: 10px 15px; }
+    .content-block { border: 1px solid #ccc; padding: 10px; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+  <h1>Tự động tạo nội dung BĐS từ Google Sheet</h1>
+  <button onclick="fetchAndGenerate()">Làm mới từ Google Sheet</button>
+  <div id="results"></div>
+
+  <script>
+    const sheetId = 'SHEET_ID_CUA_ANH';
+    const apiKey = 'OPENAI_API_KEY';
+    const sheetRange = 'Sheet1!A2:D';
+
+    async function fetchSheetData() {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetRange}?key=${apiKey}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      return data.values || [];
+    }
+
+    async function generateContent(prompt) {
+      const res = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: prompt }],
+          temperature: 0.7
+        })
+      });
+      const json = await res.json();
+      return json.choices[0].message.content;
+    }
+
+    function formatPrompt(row) {
+      const [ma, cauHinh, gia, chatLuong] = row;
+      return `Viết bài quảng cáo để bán bất động sản sau:
+Mã hàng: ${ma}
+Cấu hình: ${cauHinh}
+Giá: ${gia}
+Chất lượng: ${chatLuong}
+Bài viết cần phù hợp để đăng lên Facebook, không vi phạm chính sách.`;
+    }
+
+    async function fetchAndGenerate() {
+      document.getElementById('results').innerHTML = 'Đang xử lý...';
+      const data = await fetchSheetData();
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '';
+
+      for (let row of data) {
+        const prompt = formatPrompt(row);
+        const content = await generateContent(prompt);
+        const div = document.createElement("div");
+        div.className = "content-block";
+        div.textContent = content;
+        resultsDiv.appendChild(div);
+      }
+    }
+  </script>
+</body>
+</html>
