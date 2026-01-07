@@ -1,0 +1,576 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLADIUM AI Operating System: Powering the Agentic AI Revolution</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00d9ff;
+            --secondary: #6366f1;
+            --accent: #8b5cf6;
+            --dark: #0a0a0f;
+            --darker: #050508;
+            --light: #f0f0f3;
+            --gray: #71717a;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #e4e4e7;
+            background: var(--dark);
+            overflow-x: hidden;
+        }
+
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+            z-index: 1000;
+            padding: 1rem 5%;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: '⚡';
+            font-size: 1.8rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.02em;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--darker);
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0, 217, 255, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 217, 255, 0.1);
+        }
+
+        .hero {
+            margin-top: 80px;
+            padding: 8rem 5% 6rem;
+            background: radial-gradient(ellipse at top, rgba(99, 102, 241, 0.15), transparent 50%),
+                        radial-gradient(ellipse at bottom, rgba(139, 92, 246, 0.1), transparent 50%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 217, 255, 0.03) 2px, rgba(0, 217, 255, 0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 217, 255, 0.03) 2px, rgba(0, 217, 255, 0.03) 4px);
+            animation: grid-move 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.03em;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #a1a1aa;
+            max-width: 900px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+        }
+
+        .section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 5%;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #a1a1aa;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+            max-width: 800px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(0, 217, 255, 0.2);
+            transform: translateY(-8px);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.5));
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .card p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #a1a1aa;
+        }
+
+        .features {
+            background: linear-gradient(180deg, var(--dark) 0%, var(--darker) 100%);
+        }
+
+        .feature-item {
+            margin-bottom: 4rem;
+            padding: 2.5rem;
+            background: rgba(99, 102, 241, 0.03);
+            border-left: 3px solid var(--primary);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(99, 102, 241, 0.08);
+            border-left-width: 5px;
+            transform: translateX(10px);
+        }
+
+        .feature-item h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+        }
+
+        .feature-item p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #d4d4d8;
+        }
+
+        .partners {
+            text-align: center;
+            background: var(--darker);
+            padding: 6rem 5%;
+        }
+
+        .partners h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        .partners-subtitle {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .partner-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .partner-logo {
+            font-size: 1.3rem;
+            color: #71717a;
+            font-weight: 700;
+            padding: 1.5rem 2.5rem;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(99, 102, 241, 0.03);
+        }
+
+        .partner-logo:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            color: white;
+            text-align: center;
+            padding: 6rem 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: cta-move 30s linear infinite;
+        }
+
+        @keyframes cta-move {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .cta-section h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .cta-section .btn {
+            background: white;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            padding: 1.2rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        footer {
+            background: var(--darker);
+            color: #71717a;
+            text-align: center;
+            padding: 3rem 5%;
+            border-top: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .tech-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .partner-logos {
+                gap: 1.5rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">⚡ SOLADIUM_AI</div>
+            <div class="nav-buttons">
+                <a href="#demo" class="btn btn-secondary">join.demo()</a>
+                <a href="#contact" class="btn btn-primary">contact.sales()</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>The OS for Thinking Machines</h1>
+            <p>SOLADIUM delivers the first AI Operating System, natively unifying and orchestrating <span class="tech-badge">storage</span><span class="tech-badge">database</span><span class="tech-badge">compute</span> to unleash the true power of agentic computing and data-intensive applications.</p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn btn-primary">&gt; Start Demo</a>
+                <a href="#learn" class="btn btn-secondary">$ Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">AI.challenges.overcome()</h2>
+        <p class="section-subtitle">Breaking through data bottlenecks at scale</p>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-icon">🔗</span>
+                    <h3>unified_pipelines</h3>
+                    <p>The SOLADIUM AI OS unifies and orchestrates storage, database, and application runtime. An operating environment for AI to sense, learn, reason, and act globally.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-icon">⚡</span>
+                    <h3>extreme_scale</h3>
+                    <p>Our DASE architecture delivers breakthrough parallelism for limitless scale and real-time performance, feeding 100k+ GPU clusters at TBs/sec to eliminate AI data bottlenecks.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-icon">🛡️</span>
+                    <h3>rock_solid</h3>
+                    <p>Enterprise-grade reliability, resiliency, and security with multi-tenancy, granular access controls, automation, and real-time auditability for your AI agents.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-icon">💰</span>
+                    <h3>cost_optimized</h3>
+                    <p>AI scale without cost explosion. Our OS with DASE enables radical efficiency, offering superior economics with over 50% lower TCO for demanding workloads.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section features">
+        <h2 class="section-title">system.architecture()</h2>
+        <p class="section-subtitle">Built on revolutionary DASE architecture, engineered to break critical barriers to scale, performance, and security.</p>
+        
+        <div class="feature-item">
+            <h3><span class="feature-icon">🎯</span> orchestrate_ecosystem()</h3>
+            <p>Leverage SOLADIUM infrastructure services to build understanding from experiences, connecting AI agents for collaborative learning and action across your entire data landscape.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3><span class="feature-icon">⚙️</span> real_time_actions()</h3>
+            <p>A containerized compute engine that acts as the AI's central nervous system, instantly processing signals from new data and events, dispatching instructions for immediate action.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3><span class="feature-icon">🧠</span> knowledge_base()</h3>
+            <p>This global database indexes all data and AI metadata. Search trillions of vectors and other tabular data in milliseconds. It enables your AI to reason over everything it knows.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3><span class="feature-icon">💾</span> infinite_memory()</h3>
+            <p>Holds every raw data point—images, video, text, events—forming the AI's foundational experiences. Exabytes of all-flash storage, instantly fueling AI learning and insight.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3><span class="feature-icon">🌐</span> unified_global()</h3>
+            <p>Unifies components into a global AI brain, spanning edge to cloud. All data and compute share one namespace, security, and APIs. One secure cohesive AI OS, tying everything together.</p>
+        </div>
+    </section>
+
+    <section class="partners">
+        <h2>we.are.the.OS()</h2>
+        <p class="partners-subtitle">// Not just running on an OS</p>
+        <div class="partner-logos">
+            <div class="partner-logo">🔷 CoreWeave</div>
+            <div class="partner-logo">🎬 Pixar</div>
+            <div class="partner-logo">λ Lambda</div>
+            <div class="partner-logo">🟢 NVIDIA</div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>AI.deserves.better()</h2>
+        <a href="#demo" class="btn">$ schedule_demo --now</a>
+    </section>
+
+    <footer>
+        <p>© 2025 SOLADIUM_AI // powering_the_future.execute()</p>
+    </footer>
+</body>
+</html>
